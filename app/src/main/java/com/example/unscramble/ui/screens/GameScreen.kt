@@ -1,12 +1,16 @@
 package com.example.unscramble.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.unscramble.ui.components.FinalScoreDialog
 import com.example.unscramble.ui.components.GameLayout
+import com.example.unscramble.ui.components.HintButton
 import com.example.unscramble.ui.components.ScoreCard
 
 @Composable
@@ -38,6 +43,27 @@ fun GameScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(24.dp)
     ) {
+
+        if(!gameUiState.hintUsed){
+            HintButton(
+                modifier = Modifier
+                    .align(Alignment.End)
+            ) {
+                gameViewModel.onHintUse()
+            }
+        }else{
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Row(modifier = Modifier.padding(16.dp)) {
+                    Text(text = "Hint : ", style = MaterialTheme.typography.titleMedium)
+                    Text(text = "${gameUiState.hint.second} is at position ${gameUiState.hint.first + 1}")
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
         GameLayout(
             userGuess = gameViewModel.userGuess,
             isGuessWrong = gameUiState.isGuessedWrong,

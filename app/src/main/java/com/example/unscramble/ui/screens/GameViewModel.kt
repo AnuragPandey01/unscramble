@@ -79,7 +79,7 @@ class GameViewModel: ViewModel() {
     private fun updateGameState(updatedScore: Int) {
         if(uiState.value.currentWordCount == MAX_NO_OF_WORDS){
             _uiState.update{
-                it.copy(score = updatedScore, isGameOver = true)
+                it.copy(score = updatedScore, isGameOver = true, hintUsed = false, hint = Pair(0,' '))
             }
         }else{
             _uiState.update { currentState ->
@@ -87,10 +87,22 @@ class GameViewModel: ViewModel() {
                     isGuessedWrong = false,
                     currentScrambledWord = pickRandomWordAndShuffle(),
                     score = updatedScore,
-                    currentWordCount = currentState.currentWordCount+1
+                    currentWordCount = currentState.currentWordCount+1,
+                    hintUsed = false,
+                    hint = Pair(0,' ')
                 )
             }
         }
     }
+
+
+   fun onHintUse(){
+       val len = currentWord.length-1
+       val index = (0..len).random()
+       val hint = currentWord[index]
+       _uiState.update {
+          it.copy(hintUsed = true, hint = Pair(index,hint))
+       }
+   }
 
 }

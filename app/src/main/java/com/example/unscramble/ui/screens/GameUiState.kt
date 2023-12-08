@@ -5,5 +5,7 @@ data class GameUiState(
     val isGuessedWrong:Boolean = false,
     val score: Int = 0,
     val currentWordCount: Int = 1,
-    val isGameOver: Boolean =false
+    val isGameOver: Boolean =false,
+    val hintUsed: Boolean = false,
+    val hint:Pair<Int,Char> = Pair(0,' ')
 )
