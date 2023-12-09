@@ -1,15 +1,12 @@
 package com.example.unscramble.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -44,23 +41,21 @@ fun GameScreen(
         modifier = Modifier.padding(24.dp)
     ) {
 
-        if(!gameUiState.hintUsed){
+        if(!gameUiState.wordRevealed){
             HintButton(
                 modifier = Modifier
-                    .align(Alignment.End)
+                    .align(Alignment.End),
+                text = "Reveal",
             ) {
-                gameViewModel.onHintUse()
+                gameViewModel.onReveal()
             }
         }else{
-            Card(
+            Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Row(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "Hint : ", style = MaterialTheme.typography.titleMedium)
-                    Text(text = "${gameUiState.hint.second} is at position ${gameUiState.hint.first + 1}")
-                }
-            }
+                .align(Alignment.End),
+                text = "The word is ${gameViewModel.currentWord}",
+                style = MaterialTheme.typography.titleMedium
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -70,7 +65,10 @@ fun GameScreen(
             onUserGuessChanged = { gameViewModel.updateUserGuess(it) },
             onKeyboardDone = { gameViewModel.checkUserGuess()    },
             currentScrambledWord = gameUiState.currentScrambledWord,
-            wordCount = gameUiState.currentWordCount
+            wordCount = gameUiState.currentWordCount,
+            hintUsed = gameUiState.hintUsed,
+            onHintUse = { gameViewModel.onHintUse() },
+            hintPair = gameUiState.hint
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(

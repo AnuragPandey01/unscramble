@@ -2,8 +2,6 @@ package com.example.unscramble.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -17,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.unscramble.R
 
 @Composable
-fun HintButton(modifier: Modifier = Modifier,onClick:()->Unit) {
+fun HintButton(modifier: Modifier = Modifier,text:String,onClick:()->Unit) {
 
     OutlinedButton(
         onClick = {
@@ -30,7 +28,7 @@ fun HintButton(modifier: Modifier = Modifier,onClick:()->Unit) {
             verticalAlignment = Alignment.CenterVertically,
         ){
             Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_hint), contentDescription = "hint")
-            Text(text = "Hint")
+            Text(text = text)
         }
     }
 }
@@ -38,5 +36,5 @@ fun HintButton(modifier: Modifier = Modifier,onClick:()->Unit) {
 @Preview
 @Composable
 fun HintButtonPreview(){
-    HintButton(onClick = {})
+    HintButton(text = "Reveal",onClick = {})
 }

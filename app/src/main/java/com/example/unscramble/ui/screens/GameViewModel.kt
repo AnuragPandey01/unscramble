@@ -21,7 +21,9 @@ class GameViewModel: ViewModel() {
     var userGuess by mutableStateOf("")
         private set
 
-    private lateinit var currentWord: String
+    lateinit var currentWord: String
+        private set
+
     private var usedWords: MutableSet<String> = mutableSetOf()
 
     init{
@@ -62,7 +64,14 @@ class GameViewModel: ViewModel() {
     fun checkUserGuess() {
 
         if (userGuess.equals(currentWord, ignoreCase = true)) {
-            updateGameState(uiState.value.score + SCORE_INCREASE)
+
+            updateGameState(
+                uiState.value.score
+                    .plus(
+                        if (uiState.value.wordRevealed) 0 else SCORE_INCREASE
+                    )
+            )
+
         } else {
             _uiState.update {
                 it.copy(isGuessedWrong = true)
@@ -89,7 +98,8 @@ class GameViewModel: ViewModel() {
                     score = updatedScore,
                     currentWordCount = currentState.currentWordCount+1,
                     hintUsed = false,
-                    hint = Pair(0,' ')
+                    hint = Pair(0,' '),
+                    wordRevealed = false,
                 )
             }
         }
@@ -104,5 +114,11 @@ class GameViewModel: ViewModel() {
           it.copy(hintUsed = true, hint = Pair(index,hint))
        }
    }
+
+    fun onReveal(){
+        _uiState.update {
+            it.copy(wordRevealed = true)
+        }
+    }
 
 }
